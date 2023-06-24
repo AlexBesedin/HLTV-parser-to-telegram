@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 import requests_cache
 import random
+import logging
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
@@ -54,11 +55,34 @@ class Parse:
                 if new_news:
                     for news in new_news:
                         send_to_telegram(news)
+                        logging.info(f"Sent news to Telegram: {news}")
                     self.last_news = current_news
             await asyncio.sleep(300)
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s, %(levelname)s, %(name)s, %(message)s',
+        filename='main.log',
+        encoding='utf-8'
+
+    )
+    
+    # Создание обработчика для вывода в консоль
+    console_handler = logging.StreamHandler()
+    # Установка уровня логирования для обработчика
+    console_handler.setLevel(logging.INFO)
+    # Создание форматировщика для вывода в консоль
+    console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    # Привязка форматировщика к обработчику
+    console_handler.setFormatter(console_formatter)
+    # Получение корневого логгера
+    root_logger = logging.getLogger()
+    # Добавление обработчика в корневой логгер
+    root_logger.addHandler(console_handler)
+    logging.info('Парсер запущен!')
+    
     parser = Parse(HLTV_ORG)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(parser.parse_today_news())
