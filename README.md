@@ -9,6 +9,7 @@
 - **pyTelegramBotAPI**: для создания Telegram-бота.
 - **requests**: для выполнения HTTP-запросов.
 - **requests-cache**: для кеширования HTTP-ответов.
+- **docker** и **docker-compose**: для контейнеризации приложения с использованием Docker.
 
 ## Как запустить проект:
 
