@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 import random
 import logging
+import logger_setup
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
@@ -31,6 +32,7 @@ class Parse:
         ]
         self.last_news = None
 
+
     async def fetch_news(self):
         async with aiohttp.ClientSession() as session:
             user_agent = random.choice(self.user_agents)
@@ -48,6 +50,7 @@ class Parse:
                     news_links.add(news_link)
                 return news_links
 
+
     async def parse_today_news(self):
         while True:
             current_news = await self.fetch_news()
@@ -64,23 +67,11 @@ class Parse:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s, %(levelname)s, %(name)s, %(message)s',
-        filename='main.log',
-        encoding='utf-8'
-    )
+    logger_setup.setup_logger(__name__, 'main.log')
 
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
-    console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    console_handler.setFormatter(console_formatter)
-    root_logger = logging.getLogger()
-    root_logger.addHandler(console_handler)
-    logging.info('Парсер запущен!')
+    logger = logging.getLogger(__name__)
+    logger.info('Парсер запущен!')
 
     parser = Parse(HLTV_ORG)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(parser.parse_today_news())
-
-    

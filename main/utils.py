@@ -1,20 +1,15 @@
 import telebot
 import os
-import logging
 from dotenv import load_dotenv
+import logger_setup
 
 load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CHAT_ID = os.getenv('CHAT_ID')
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='telegram.log',
-    encoding='utf-8'
-)
-logger = logging.getLogger(__name__)
+logger = logger_setup.setup_logger(__name__, 'main.log')
+
 
 def send_to_telegram(message):
     try:
