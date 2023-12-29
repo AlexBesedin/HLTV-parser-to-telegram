@@ -7,6 +7,7 @@ services:
     environment:
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
       - CHAT_ID=${CHAT_ID}
+    restart: always
     volumes:
       - ./main:/app/main
     command: python main/main.py
