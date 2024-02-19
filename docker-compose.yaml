@@ -11,4 +11,3 @@ services:
     volumes:
       - ./main:/app/main
     command: python main/main.py
-    
